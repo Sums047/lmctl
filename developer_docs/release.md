@@ -68,7 +68,7 @@ Ensure the tag, title and changelog are all correct. Also ensure the documentati
 
 Verify the release has been published to [pypi](https://pypi.org/manage/project/lmctl/releases/).
 
-## 7. Cleanup
+## 8. Cleanup
 
 Complete the following steps to ensure development can continue as normal:
 
