@@ -92,5 +92,5 @@ class TNCOClientRequest:
                 'Accept': 'application/json'
             },
             query_params=query_params,
-            object_group_id_param=object_group_id
+            object_group_id_param=object_group_id or '1'
         )

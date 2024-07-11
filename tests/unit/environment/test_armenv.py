@@ -59,7 +59,7 @@ class TestArmSession(unittest.TestCase):
 
     @mock.patch('lmctl.environment.armenv.arm_drivers.AnsibleRmDriver')
     def test_arm_driver(self, arm_driver_init):
-        session = ArmSession(ArmSessionConfig(ArmEnvironment('lm', host='test', port=80, protocol='https')))
+        session = ArmSession(ArmSessionConfig(ArmEnvironment(name='lm', host='test', port=80, protocol='https')))
         driver = session.arm_driver
         arm_driver_init.assert_called_once_with('https://test:80')
         self.assertEqual(driver, arm_driver_init.return_value)

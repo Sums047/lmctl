@@ -8,7 +8,7 @@ environments:
       username: user
       password: secret 
       auth_host: auth
-      auth_port: 32456
+      auth_port: '32456'
       auth_protocol: https
     arm:
       default:

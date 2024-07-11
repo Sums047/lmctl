@@ -2,14 +2,12 @@ from .common import build_address
 from typing import Union
 import lmctl.drivers.arm as arm_drivers
 from pydantic.dataclasses import dataclass
-from pydantic import root_validator
+from pydantic import model_validator, BaseModel
 from lmctl.utils.dcutils.dc_capture import recordattrs
 
 DEFAULT_PROTOCOL = 'https'
 
-@recordattrs
-@dataclass
-class ArmEnvironment:
+class ArmEnvironment(BaseModel):
     name: str = None
     address: str = None
     host: str = None
@@ -17,7 +15,7 @@ class ArmEnvironment:
     protocol: str = DEFAULT_PROTOCOL
     onboarding_addr: str = None
 
-    @root_validator(pre=True)
+    @model_validator(mode='before')
     @classmethod
     def normalize_addresses(cls, values):
         address = values.get('address', None)

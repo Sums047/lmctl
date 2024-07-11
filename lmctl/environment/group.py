@@ -1,17 +1,17 @@
 from typing import Dict, Optional
+from typing_extensions import Annotated
 
 from pydantic.dataclasses import dataclass
-from pydantic import constr, Field
+from pydantic import constr, Field, StringConstraints, BaseModel
 
 from lmctl.utils.dcutils.dc_capture import recordattrs
 
 from .lmenv import TNCOEnvironment
 from .armenv import ArmEnvironment
 
-@recordattrs
-@dataclass
-class EnvironmentGroup:
-    name: constr(strip_whitespace=True, min_length=1)
+
+class EnvironmentGroup(BaseModel):
+    name: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1),] = None
     description: Optional[str] = Field(default=None)
     tnco: Optional[TNCOEnvironment] = Field(default=None)
     arms: Optional[Dict[str, ArmEnvironment]] = Field(default_factory=dict)

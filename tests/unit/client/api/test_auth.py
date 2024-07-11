@@ -50,7 +50,7 @@ class TestAuthenticationAPI(unittest.TestCase):
         self.mock_client.make_request_for_json.assert_called_with(TNCOClientRequest(
             method='POST',
             endpoint='ui/api/login',
-            override_address=None,
+            override_address='',
             inject_current_auth=False, 
             headers={'Content-Type': 'application/json'}, 
             body={'username': 'joe', 'password': 'secretpass'}
@@ -70,7 +70,7 @@ class TestAuthenticationAPI(unittest.TestCase):
                 TNCOClientRequest(
                     method='POST',
                     endpoint='ui/api/login',
-                    override_address=None,
+                    override_address='',
                     inject_current_auth=False, 
                     headers={'Content-Type': 'application/json'}, 
                     body={'username': 'joe', 'password': 'secretpass'}
@@ -80,7 +80,7 @@ class TestAuthenticationAPI(unittest.TestCase):
                 TNCOClientRequest(
                     method='POST',
                     endpoint='api/login',
-                    override_address=None,
+                    override_address='',
                     inject_current_auth=False,
                     headers={'Content-Type': 'application/json'}, 
                     body={'username': 'joe', 'password': 'secretpass'}
@@ -108,7 +108,7 @@ class TestAuthenticationAPI(unittest.TestCase):
         self.mock_client.make_request_for_json.assert_called_with(TNCOClientRequest(
                                                                     method='POST', 
                                                                     inject_current_auth=False, 
-                                                                    override_address=None,
+                                                                    override_address='',
                                                                     headers={'Content-Type': 'application/json'},
                                                                     body={
                                                                             'username': 'joe', 

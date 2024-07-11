@@ -1,12 +1,13 @@
 import lmctl.drivers.lm as lm_drivers
 import logging
 import os
+from typing_extensions import Annotated
 
 from typing import Union, Optional
 from .common import build_address
 from urllib.parse import urlparse
 from pydantic.dataclasses import dataclass
-from pydantic import constr, root_validator
+from pydantic import constr, root_validator, model_validator, BaseModel, StringConstraints
 
 from lmctl.utils.jwt import decode_jwt
 from lmctl.utils.dcutils.dc_capture import recordattrs
@@ -25,10 +26,9 @@ DEFAULT_BRENT_NAME = 'brent'
 DEFAULT_PROTOCOL = HTTPS_PROTOCOL
 DEFAULT_SECURE = False
 
-@recordattrs
-@dataclass
-class TNCOEnvironment:
-    address: constr(strip_whitespace=True, min_length=1) = None
+
+class TNCOEnvironment(BaseModel):
+    address: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1),] = None
     name: str = None
     secure: bool = DEFAULT_SECURE
 
@@ -57,7 +57,7 @@ class TNCOEnvironment:
     kami_port: Optional[Union[str,int]] = DEFAULT_KAMI_PORT 
     kami_protocol: Optional[str] = DEFAULT_KAMI_PROTOCOL
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     @classmethod
     def check_security(cls, values):
         secure = values.get('secure', DEFAULT_SECURE)
@@ -114,17 +114,20 @@ class TNCOEnvironment:
 
     @classmethod
     def _validate_zen(cls, values):
+        print("*************_validate_zen")
         username = values.get('username', None)
         if not username:
             raise ValueError(f'Secure TNCO environment must be configured with a "username" property when using "auth_mode={ZEN_AUTH_MODE}". If the TNCO environment is not secure then set "secure" to False')
         # Zen auth address must be provided
         auth_address = values.get('auth_address', None)
+        print("*************_validate_zen", auth_address)
         auth_host = values.get('auth_host', None)
         if not auth_address and not auth_host:
+            print("*************INSIDE IF NOT")
             raise ValueError(f'Secure TNCO environment must be configured with Zen authentication address on the "auth_address" property (or "auth_host"/"auth_port"/"auth_protocol") when using "auth_mode={ZEN_AUTH_MODE}". If the TNCO environment is not secure then set "secure" to False')
         return values
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     @classmethod
     def normalize_addresses(cls, values):
         auth_mode = values.get('auth_mode', None)
@@ -172,7 +175,7 @@ class TNCOEnvironment:
             parsed_url = parsed_url._replace(scheme=kami_protocol, netloc=new_netloc, path='')
             kami_address = parsed_url.geturl()
             values['kami_address'] = kami_address
-
+        
         return values
     
     @classmethod

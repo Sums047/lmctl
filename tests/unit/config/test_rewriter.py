@@ -42,7 +42,7 @@ test:
     port: 7654
     username: jack
     secure_port: True
-    auth_port: 4643
+    auth_port: '4643'
     auth_host: 127.0.0.2
     password: secret
 """
@@ -55,7 +55,7 @@ environments:
       port: 7654
       username: jack
       protocol: https
-      auth_port: 4643
+      auth_port: '4643'
       auth_host: 127.0.0.2
       password: secret
       secure: true
@@ -168,7 +168,7 @@ class TestConfigRewriter(unittest.TestCase):
                         'auth_host': '127.0.0.2',
                         'port': 7654,
                         'username': 'jack',
-                        'auth_port': 4643,
+                        'auth_port': '4643',
                         'password': 'secret',
                         'secure': True
                     }
