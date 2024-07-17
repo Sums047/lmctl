@@ -233,7 +233,6 @@ class TestConfigIO(unittest.TestCase):
         }
         with self.assertRaises(ConfigError) as context:
             ConfigIO().dict_to_config(invalid_config)
-        print("********************", str(context.exception).split('[type=value_error')[0].strip())
         self.assertEqual(str(context.exception).split('[type=value_error')[0].strip(), 'Config error: 1 validation error for Config\nenvironments.test.tnco\n  Value error, Secure TNCO environment must be configured with either "client_id" or "username" property when using "auth_mode=oauth". If the TNCO environment is not secure then set "secure" to False')
 
     def test_parse_invalid_arm(self):
@@ -249,7 +248,6 @@ class TestConfigIO(unittest.TestCase):
         }
         with self.assertRaises(ConfigError) as context:
             ConfigIO().dict_to_config(invalid_config)
-        print("**********context", str(context.exception).split('[type=value_error')[0].strip())
         self.assertEqual(str(context.exception).split('[type=value_error')[0].strip(), 'Config error: 1 validation error for Config\nenvironments.test.arms.invalid\n  Value error, AnsibleRM environment cannot be configured without "address" property or "host" property')
 
     def test_config_to_file(self):
@@ -266,7 +264,6 @@ class TestConfigIO(unittest.TestCase):
 
         target_path = os.path.join(self.tmp_dir, 'write-config.yaml')
         config_io = ConfigIO()
-        print("*********config", config)
         config_io.config_to_file(config, target_path)
 
         self.assertTrue(os.path.exists(target_path))

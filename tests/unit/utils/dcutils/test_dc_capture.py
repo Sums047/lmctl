@@ -2,7 +2,7 @@ import unittest
 from dataclasses import dataclass
 import pydantic.dataclasses as pydanticdc
 from lmctl.utils.dcutils.dc_capture import recordattrs, AttrRecord, attr_records, attr_records_dict, is_recording_attrs
-from pydantic import parse_obj_as
+from pydantic import TypeAdapter
 
 @recordattrs
 @dataclass
@@ -127,7 +127,7 @@ class TestRecordAttrs(unittest.TestCase):
         )
 
     def test_pydantic_from_dict(self):
-        inst = parse_obj_as(PydanticDataclass, {'first': 'A', 'second': 1})
+        inst = TypeAdapter(PydanticDataclass).validate_python({'first': 'A', 'second': 1})
         records = attr_records(inst)
         self.assertEqual(records, (
                 AttrRecord(name='first', set_on='ON_INIT'),

@@ -19,7 +19,7 @@ class TNCOClientRequest:
     override_address: str = None
     inject_current_auth: bool = True
     additional_auth_handler: AuthBase = None
-    object_group_id_param: str = None
+    object_group_id_param: str | None = None
     object_group_id_body: str = None
 
     def __post_init__(self):
@@ -92,5 +92,5 @@ class TNCOClientRequest:
                 'Accept': 'application/json'
             },
             query_params=query_params,
-            object_group_id_param=object_group_id or '1'
+            object_group_id_param=object_group_id
         )

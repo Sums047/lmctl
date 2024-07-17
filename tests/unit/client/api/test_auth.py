@@ -15,7 +15,7 @@ class TestAuthenticationAPI(unittest.TestCase):
 
     def test_request_client_access(self):
         self.mock_client.make_request_for_json.return_value = {'access_token': '123', 'expires_in': 60}
-        response = self.authentication.request_client_access('LmClient', 'secret')
+        response = self.authentication.request_client_access(client_id='LmClient', client_secret='secret')
         self.assertEqual(response, {'access_token': '123', 'expires_in': 60})
         client_encoded = base64.b64encode('LmClient:secret'.encode('utf-8'))
         auth = HTTPBasicAuth('LmClient', 'secret')
@@ -30,7 +30,7 @@ class TestAuthenticationAPI(unittest.TestCase):
 
     def test_request_user_access(self):
         self.mock_client.make_request_for_json.return_value = {'access_token': '123', 'expires_in': 60}
-        response = self.authentication.request_user_access('LmClient', 'secret', 'joe', 'secretpass')
+        response = self.authentication.request_user_access(client_id='LmClient', client_secret='secret', username='joe', password='secretpass')
         self.assertEqual(response, {'access_token': '123', 'expires_in': 60})
         client_encoded = base64.b64encode('LmClient:secret'.encode('utf-8'))
         auth = HTTPBasicAuth('LmClient', 'secret')
@@ -45,7 +45,7 @@ class TestAuthenticationAPI(unittest.TestCase):
 
     def test_legacy_login(self):
         self.mock_client.make_request_for_json.return_value = {'accessToken': '123', 'expiresIn': 60}
-        response = self.authentication.legacy_login('joe', 'secretpass')
+        response = self.authentication.legacy_login(username='joe', password='secretpass')
         self.assertEqual(response, {'accessToken': '123', 'expiresIn': 60})
         self.mock_client.make_request_for_json.assert_called_with(TNCOClientRequest(
             method='POST',
@@ -63,7 +63,7 @@ class TestAuthenticationAPI(unittest.TestCase):
             else:
                 return {'accessToken': '123', 'expiresIn': 60}
         self.mock_client.make_request_for_json.side_effect = request_mock
-        response = self.authentication.legacy_login('joe', 'secretpass')
+        response = self.authentication.legacy_login(username='joe', password='secretpass')
         self.assertEqual(response, {'accessToken': '123', 'expiresIn': 60})
         self.mock_client.make_request_for_json.assert_has_calls([
             call(
@@ -90,7 +90,7 @@ class TestAuthenticationAPI(unittest.TestCase):
     
     def test_request_zen_api_key_access(self):
         self.mock_client.make_request_for_json.return_value = {'token': '123'}
-        response = self.authentication.request_zen_api_key_access('joe', 'secretkey', zen_auth_address='https://zen:80')
+        response = self.authentication.request_zen_api_key_access(username='joe', api_key='secretkey', zen_auth_address='https://zen:80')
         self.assertEqual(response, {'token': '123'})
         self.mock_client.make_request_for_json.assert_called_with(TNCOClientRequest(
                                                                     method='POST', 
@@ -103,7 +103,7 @@ class TestAuthenticationAPI(unittest.TestCase):
                                                                         }
                                                                     ))
         # Without zen_auth_address
-        response = self.authentication.request_zen_api_key_access('joe', 'secretkey')
+        response = self.authentication.request_zen_api_key_access(username='joe', api_key='secretkey')
         self.assertEqual(response, {'token': '123'})
         self.mock_client.make_request_for_json.assert_called_with(TNCOClientRequest(
                                                                     method='POST', 
