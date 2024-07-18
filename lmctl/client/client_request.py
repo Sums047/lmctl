@@ -1,5 +1,5 @@
 from pydantic.dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 from dataclasses import field
 from requests.auth import AuthBase
 
@@ -11,16 +11,16 @@ class ValidationConfig:
 @dataclass(config=ValidationConfig)
 class TNCOClientRequest:
     method: str
-    endpoint: str = None
+    endpoint: Optional[str] = None
     headers: Dict[str, Any] = field(default_factory=dict)
     query_params: Dict[str, Any] = field(default_factory=dict)
     body: Any = None
     files: Dict[str, Any] = field(default_factory=dict)
-    override_address: str = None
+    override_address: Optional[str] = None
     inject_current_auth: bool = True
     additional_auth_handler: AuthBase = None
-    object_group_id_param: str = None
-    object_group_id_body: str = None
+    object_group_id_param: Optional[str] = None
+    object_group_id_body: Optional[str] = None
 
     def __post_init__(self):
         if self.object_group_id_body is not None:
