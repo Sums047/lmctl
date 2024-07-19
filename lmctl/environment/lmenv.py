@@ -2,7 +2,9 @@ import lmctl.drivers.lm as lm_drivers
 import logging
 import os
 
-from typing import Union, Optional, Annotated
+from typing import Union, Optional
+from typing_extensions import Annotated
+
 from .common import build_address
 from urllib.parse import urlparse
 from pydantic.dataclasses import dataclass

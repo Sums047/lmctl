@@ -300,8 +300,7 @@ class TestConfigIO(unittest.TestCase):
         })
 
         target_path = os.path.join(self.tmp_dir, 'write-config.yaml')
-        config_io = ConfigIO()
-        config_io.config_to_file(config, target_path)
+        ConfigIO().config_to_file(config, target_path)
 
         config.environments['test'].description = 'Updated description'
         ConfigIO().config_to_file(config, target_path, backup_existing=True)
@@ -360,7 +359,6 @@ class TestConfigIO(unittest.TestCase):
         })
 
         config_dict = ConfigIO().config_to_dict(config)
-        print("config_dictconfig_dict", config_dict)
         self.assertEqual(config_dict, {
             'environments': {
                 'test': {

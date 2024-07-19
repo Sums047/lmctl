@@ -1,4 +1,5 @@
-from typing import Dict, Optional, Annotated
+from typing import Dict, Optional
+from typing_extensions import Annotated
 
 from pydantic.dataclasses import dataclass
 from pydantic import constr, Field, StringConstraints
