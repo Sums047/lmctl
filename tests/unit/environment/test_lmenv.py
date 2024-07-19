@@ -152,10 +152,10 @@ class TestTNCOEnvironment(unittest.TestCase):
             TNCOEnvironment(address='https://test:8080', secure=True, auth_mode='zen', auth_address='https://zen:8000/api')
         self.assertEqual(str(context.exception).split('[type=value_error')[0].strip(), '1 validation error for TNCOEnvironment\n  Value error, Secure TNCO environment must be configured with a "username" property when using "auth_mode=zen". If the TNCO environment is not secure then set "secure" to False')
 
-    # def test_zen_auth_missing_auth_address(self):
-    #     with self.assertRaises(ValidationError) as context:
-    #         TNCOEnvironment(address='https://test:8080', secure=True, auth_mode='zen', username='user', api_key='API')
-    #     self.assertEqual(str(context.exception).split('[type=value_error')[0].strip(), '1 validation error for TNCOEnvironment\n  Value error, Secure TNCO environment must be configured with Zen authentication address on the "auth_address" property (or "auth_host"/"auth_port"/"auth_protocol") when using "auth_mode=zen". If the TNCO environment is not secure then set "secure" to False')
+    def test_zen_auth_missing_auth_address(self):
+        with self.assertRaises(ValidationError) as context:
+            TNCOEnvironment(address='https://test:8080', secure=True, auth_mode='zen', username='user', api_key='API')
+        self.assertEqual(str(context.exception).split('[type=value_error')[0].strip(), '1 validation error for TNCOEnvironment\n  Value error, Secure TNCO environment must be configured with Zen authentication address on the "auth_address" property (or "auth_host"/"auth_port"/"auth_protocol") when using "auth_mode=zen". If the TNCO environment is not secure then set "secure" to False')
 
     def test_invalid_use_of_api_key_when_in_oauth_mode(self):
         with self.assertRaises(ValidationError) as context:

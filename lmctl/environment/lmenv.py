@@ -57,13 +57,28 @@ class TNCOEnvironment:
     kami_port: Optional[Union[str,int]] = DEFAULT_KAMI_PORT 
     kami_protocol: Optional[str] = DEFAULT_KAMI_PROTOCOL
 
+
     @model_validator(mode='before')
+    @classmethod
+    def combined_validator(cls, values):
+        """
+        Combined validator to ensure the order of validations.
+        
+        The check_security method is called first, 
+        followed by the normalize_addresses method.
+        """
+        values = cls.check_security(values)
+        values = cls.normalize_addresses(values)
+        return values
+
     @classmethod
     def check_security(cls, values):
         if hasattr(values, 'kwargs'):
             values_dict = values.kwargs
-        else:
+        elif isinstance(values, dict):
             values_dict = values
+        else:
+            raise ValueError()
         secure = values_dict.get('secure', DEFAULT_SECURE)
         if secure is True:
             auth_mode = values_dict.get('auth_mode', None)
@@ -139,7 +154,6 @@ class TNCOEnvironment:
             raise ValueError(f'Secure TNCO environment must be configured with Zen authentication address on the "auth_address" property (or "auth_host"/"auth_port"/"auth_protocol") when using "auth_mode={ZEN_AUTH_MODE}". If the TNCO environment is not secure then set "secure" to False')
         return values
 
-    @model_validator(mode='before')
     @classmethod
     def normalize_addresses(cls, values):
         if hasattr(values, 'kwargs'):
