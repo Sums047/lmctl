@@ -25,6 +25,9 @@ class TNCOClientRequest:
     def __post_init__(self):
         if self.object_group_id_body is not None:
             self.add_object_group_id_body(self.object_group_id_body)
+        
+        if not (self.endpoint or self.override_address):
+            raise ValueError("At least one of endpoint or override_address must be set")
 
     def add_headers(self, headers: Dict[str, Any]) -> 'TNCOClientRequest':
         self.headers.update(headers)
